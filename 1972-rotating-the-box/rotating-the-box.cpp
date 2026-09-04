@@ -14,7 +14,9 @@ public:
 
             for(int j=m-1;j>=0;--j){
                 if(bg[i][j] == '#'){
-                    swap(bg[i][pos], bg[i][j]);
+                    // bg[i][pos] = '#';
+                    // bg[i][j] = '.';
+                    swap(bg[i][pos], bg[i][j]);  // swap hi krna yaha
                     pos = pos-1;
                 }
                 else if(bg[i][j] == '*') pos = j-1;
