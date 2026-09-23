@@ -1,8 +1,7 @@
--- Write your PostgreSQL query statement below
-
-SELECT customer_id , COUNT(*) count_no_trans 
-FROM VISITS V 
-WHERE VISIT_ID NOT IN (
-    SELECT VISIT_ID FROM Transactions
+# Write your MySQL query statement below
+select customer_id ,count(*) count_no_trans 
+from Visits
+where visit_id not in (
+    select t.visit_id  from Transactions t
 )
-GROUP BY customer_id ;
+group by customer_id ;
