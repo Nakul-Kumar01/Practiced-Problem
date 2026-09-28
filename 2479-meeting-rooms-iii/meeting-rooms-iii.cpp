@@ -2,23 +2,23 @@ class Solution {
 public:
     int mostBooked(int n, vector<vector<int>>& arr) {
 
-        priority_queue<long long,vector<long long>,greater<long long>> free;
+        int m = arr.size();
+
         priority_queue<pair<long long, long long>, vector<pair<long long, long long>>,
                        greater<pair<long long, long long>>>
             q;
+        priority_queue<int, vector<int>, greater<int>> free;
 
         for (int i = 0; i < n; i++)
             free.push(i);
 
-        long long t = 0;
+        vector<int> c(n, 0);
 
         sort(arr.begin(), arr.end());
 
-        vector<int> c(n, 0);
-
+        long long t = 0;
         for (auto x : arr) {
-            long long a = x[0],b = x[1];
-            t = max(t, a);
+            t = max(t, (long long)x[0]);
 
             while (!q.empty() && q.top().first <= t) {
                 free.push(q.top().second);
@@ -32,15 +32,15 @@ public:
                     q.pop();
                 }
             }
-            
+
+            q.push({t + x[1]-x[0],free.top()});
             c[free.top()]++;
-            q.push({t+(b-a),free.top()});
             free.pop();
         }
 
+
         int maxi = 0;
         int ans = 0;
-
         for(int i=0;i<n;i++){
             if(maxi < c[i]){
                 maxi = c[i];
