@@ -8,11 +8,16 @@ public:
         for(int i=0;i<n;i++){
 
 
-            int in = lower_bound(arr.begin(),arr.end(),nums[i]) - arr.begin();
+            int j =0;
+            while(j<arr.size()){
+                if(arr[j]>= nums[i]){
+                    arr[j] = nums[i];
+                    break;
+                }
+                j++;
+            }
 
-            if(in == arr.size()) arr.push_back(nums[i]);
-            else arr[in] = nums[i];
-
+            if(j==arr.size()) arr.push_back(nums[i]);
             if(arr.size()>=3) return 1;
         }
  return 0;
