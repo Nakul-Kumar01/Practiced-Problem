@@ -1,27 +1,49 @@
 class Solution {
 public:
-    vector<bool> checkIfPrerequisite(int n, vector<vector<int>>& pre, vector<vector<int>>& que) {
-        
+    vector<bool> checkIfPrerequisite(int numCourses, vector<vector<int>>& prerequisites, vector<vector<int>>& queries) {
+        vector<vector<int>> adj(numCourses);
+        vector<int>indegree(numCourses,0);
 
-        vector<vector<bool>>arr(n,vector<bool>(n,0));
+        for(auto& pre:prerequisites){
+            adj[pre[0]].push_back(pre[1]);
+            indegree[pre[1]]++;
+        }
 
-
-        for(auto x  : pre){
-            arr[x[1]][x[0]] = 1;
-
-            for(int i=0;i<arr[0].size();i++){
-                if(arr[x[0]][i]) arr[x[1]][i] = 1;
-            }
-
-            for(int i=0;i<arr.size();i++){
-                if(arr[i][x[1]]) arr[i][x[0]] = 1;
+        queue<int> q;
+        for(int i=0;i<numCourses;i++){
+            if(indegree[i] == 0){
+                q.push(i);
             }
         }
 
-vector<bool>ans;
-        for(auto x : que){
-           ans.push_back(arr[x[1]][x[0]]);
+        vector<vector<bool>> isTrue(numCourses,vector<bool>(numCourses,false));
+
+        while(!q.empty()){
+            int node = q.front();
+            q.pop();
+
+            for(auto it: adj[node]){
+                isTrue[it][node] = true;
+
+                for(int i=0;i<numCourses;i++){
+                    if(isTrue[node][i]){
+                        isTrue[it][i] = true;
+                    }
+                }
+
+                indegree[it]--;
+
+                if (indegree[it] == 0)
+                    q.push(it);
+            }
         }
+
+        vector<bool>ans;
+
+       for (auto &q : queries) {
+            ans.push_back(isTrue[q[1]][q[0]]);
+        }
+
         return ans;
     }
 };
